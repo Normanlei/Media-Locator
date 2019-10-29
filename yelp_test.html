@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>yelp</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <script src="config.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+
+</head>
+
+<body>
+    <script>
+        var api_key = config.yelp_api_key;
+        var myurl = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=bank&radius=100&limit=1&location=17250 140th Avenue Southeast, Renton";
+
+        $.ajax({
+            url: myurl,
+            headers: {
+                'Authorization': 'Bearer '+api_key,
+            },
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                } 
+        });
+    </script>
+</body>
+
+</html>

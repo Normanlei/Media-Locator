@@ -65,7 +65,7 @@ $(document).ready(function () {
     $("#geolocation").on('click',geoFindMe);
     function geoFindMe() {
         function success(position) {
-            // console.log(position);
+            console.log(position);
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
             getPlaceDetail(latitude, longitude);
