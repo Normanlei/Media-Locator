@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Food Truck Locator</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+ 
+    <style>
+        #map {
+            height: 60%;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #right-panel {
+            font-family: 'Roboto', 'sans-serif';
+            line-height: 30px;
+            padding-left: 10px;
+        }
+
+        #right-panel select,
+        #right-panel input {
+            font-size: 15px;
+        }
+
+        #right-panel select {
+            width: 100%;
+        }
+
+        #right-panel i {
+            font-size: 12px;
+        }
+
+        #right-panel {
+            height: 60%;
+            float: right;
+            width: 390px;
+            overflow: auto;
+        }
+
+        #map {
+            margin-right: 400px;
+        }
+
+        @media print {
+            #map {
+                height: 500px;
+                margin: 0;
+            }
+
+            #right-panel {
+                float: none;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="right-panel">
+        <button class="route" style="display: none;">Show Route!</button>
+        <button class="map" style="display: none;">Direct on Google Map!</button>
+    </div>
+    <div id="map">
+    </div>
+
+
+    <script>
+        var api_key = config.google_api_key;
+    </script>
+
+
+</body>
+
+</html>
