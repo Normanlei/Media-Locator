@@ -141,7 +141,7 @@ $(document).ready(function () {
             $(".route").css("display", "block");
             $(".map").css("display", "block");
             $(".map").on("click", function () {
-                window.location.replace("https://www.google.com/maps/dir/?api=1&origin=QVB&origin_place_id=" + currentLocationID + "&destination=QVB&destination_place_id=" + place.place_id + "&travelmode=walking");
+                window.open("https://www.google.com/maps/dir/?api=1&origin=QVB&origin_place_id=" + currentLocationID + "&destination=QVB&destination_place_id=" + place.place_id + "&travelmode=walking");
             });
             $(".route").on("click", function () {
                 console.log(place);
