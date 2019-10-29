@@ -8,21 +8,26 @@
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="config.js"></script>
     <script src="script.js"></script>
-    <link href="style.css" rel="stylesheet"/>
+    <link href="style.css" rel="stylesheet" />
 </head>
 
 <body>
+
     <div id="right-panel">
-        <button class="route" style="display: none;">Show Route!</button>
-        <button class="map" style="display: none;">Direct on Google Map!</button>
     </div>
     <div id="map">
     </div>
+    <div>
+        <button class="route" style="display: none;">Show Route!</button>
+        <button class="map" style="display: none;">Direct on Google Map!</button>
 
+    </div>
+    <div id="locationField">
+        <input id="autocomplete" placeholder="Enter your address-required" onFocus="" type="text" />
+        <input id="type_search" placeholder="type of property-required" onFocus="" type="text" />
+        <input id="range" placeholder="Enter range-optional" onFocus="" type="text" />
+    </div>
 
-    <script>
-        var api_key = config.google_api_key;
-    </script>
 
 
 </body>
