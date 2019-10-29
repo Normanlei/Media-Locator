@@ -37,7 +37,7 @@ $(document).ready(function () {
                 var longitude = response.results[0].geometry.location.lng;
                 // console.log(lattitude);
                 // console.log(longitude);
-                getPlaceDetail(lattitude, longitude);
+                //getPlaceDetail(lattitude, longitude);
                 initialize(lattitude, longitude);
             });
     }
@@ -56,19 +56,20 @@ $(document).ready(function () {
                 // console.log(response.results[0].formatted_address);
                 currentLocationID = response.results[0].place_id;
                 currentLocation = response.results[0].formatted_address;
+                $('#autocomplete').val(currentLocation);
             });
     }
 
 
 
-    geoFindMe();
+    $("#geolocation").on('click',geoFindMe);
     function geoFindMe() {
         function success(position) {
             // console.log(position);
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
             getPlaceDetail(latitude, longitude);
-            initialize(latitude, longitude);
+            //initialize(latitude, longitude);
         }
 
         function error() {
@@ -148,6 +149,7 @@ $(document).ready(function () {
                 console.log(currentLocation);
                 calculateAndDisplayRoute(directionsService, directionsRenderer, currentLocation, place.vicinity);
             });
+
             google.maps.event.addListener(infowindow, 'closeclick', function () {
                 $(".route").css("display", "none");
                 $(".map").css("display", "none");
