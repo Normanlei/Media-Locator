@@ -1,0 +1,150 @@
+.display-3 {
+    width:100%;
+    line-height: 75px;
+    text-align: center;
+    background-color: #343a40;     
+    border-radius: 0;
+    color:white;
+    font-size: 2.05em;
+    font-weight: bold; 
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;   
+    height: 72px;
+  }
+
+   
+
+  {
+    box-sizing: border-box;
+  }
+  #cities{
+    margin-left:20px;
+  }
+  .divF{
+    background-color: #007bff;
+    color:white;
+    margin-left:20px;
+    width:130px;
+    display:inline-block;
+    text-align: left;
+    border-radius:3px;
+
+  }
+  /* Create two equal columns that floats next to each other */
+  .column1 {
+    float: left;
+    width: 25%;
+    padding: 10px;
+    height: 525px; 
+  }
+  .column2 {
+    float: left;
+    width: 75%;
+    padding: 10px;
+    height: 1000px; 
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .inp1{    
+    margin-left:15px; 
+    
+  }
+  input,button{
+      height:2.5em;
+  }
+  .p1{
+    top:0%;
+    
+    margin-left:15px;
+    font-size: 1.25em;
+    font-weight: bold; 
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;   
+  }
+
+  .select1{
+     
+  }
+   
+  i{
+      color:white;
+      align-content:center;
+  }
+   .weatherBox{
+    position: relative;
+    top:0px;
+    border-radius:3px;
+    width: 100%;
+    border: 1px solid #e1e1e1;
+    padding: 50px;
+    margin: 20px;
+    height: 250px;
+    text-align: left;
+   }
+   .p2{
+     
+       margin-left:15px;
+       font-size:1.5em;
+       font-weight:bold;
+   }
+   #uvI{
+     background-color: #dc3545;
+     color:white;
+   }
+   #map{
+    height: 60%;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-image: url("music_bg1.jpg");
+}
+
+#right-panel {
+    font-family: 'Roboto', 'sans-serif';
+    line-height: 30px;
+    padding-left: 10px;
+}
+
+#right-panel select,
+#right-panel input {
+    font-size: 15px;
+}
+
+#right-panel select {
+    width: 100%;
+}
+
+#right-panel i {
+    font-size: 12px;
+}
+
+#right-panel {
+    height: 60%;
+    float: right;
+    width: 390px;
+    overflow: auto;
+}
+
+#map {
+    margin-right: 400px;
+}
+
+@media print {
+    #map {
+        height: 500px;
+        margin: 0;
+    }
+
+    #right-panel {
+        float: none;
+        width: auto;
+    }
+}
