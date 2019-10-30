@@ -13,7 +13,7 @@
 <body>
     <script>
         var api_key = config.yelp_api_key;
-        var myurl = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=bank&radius=100&limit=1&location=17250 140th Avenue Southeast, Renton";
+        var myurl = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=bank&radius=100&location=1325 4th Ave, Seattle, WA 98101";
 
         $.ajax({
             url: myurl,
@@ -26,6 +26,19 @@
                 console.log(data);
                 } 
         });
+        // var settings = {
+        //     "async": true,
+        //     "crossDomain": true,
+        //     "url": "https://api.yelp.com/v3/businesses/search?text=coffee&latitude=37.786882&longitude=-122.399972",
+        //     "method": "GET",
+        //     "headers": {
+        //         "Authorization": "Bearer "+api_key,
+        //     }
+        // }
+
+        // $.ajax(settings).done(function (response) {
+        //     console.log(response);
+        // });
     </script>
 </body>
 

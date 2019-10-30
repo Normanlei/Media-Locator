@@ -4,19 +4,7 @@ $(document).ready(function () {
     script.src = "https://maps.googleapis.com/maps/api/js?&libraries=places&key=" + api_key;
     document.head.append(script);
 
-    var type;
-    var range;
-
-    $("#autocomplete, #type_search, #range").keypress(function (event) {
-        var keycode = (event.keyCode ? event.keyCode : event.which);
-        if (keycode == '13') {
-            type = $("#type_search").val().trim();
-            range = $("#range").val().trim();
-            if (range == null || range.length == 0) range = 1500;
-            var address = $("#autocomplete").val().trim();
-            getPlaceDetailViaAddress(address);
-        }
-    });
+    // var currentAddress;
 
     function getPlaceDetailViaAddress(address) {
         var addressArr = address.split(" ");
@@ -33,18 +21,13 @@ $(document).ready(function () {
             method: "GET"
         })
             .then(function (response) {
-                var lattitude = response.results[0].geometry.location.lat;
-                var longitude = response.results[0].geometry.location.lng;
-                // console.log(lattitude);
-                // console.log(longitude);
-                //getPlaceDetail(lattitude, longitude);
-                initialize(lattitude, longitude);
+                console.log(response);
             });
     }
 
 
-    var currentLocation;
     var currentLocationID;
+
     function getPlaceDetail(lat, lon) {
         var queryURL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon + "&key=" + api_key;
         $.ajax({
@@ -52,17 +35,23 @@ $(document).ready(function () {
             method: "GET"
         })
             .then(function (response) {
-                // console.log(response)
-                // console.log(response.results[0].formatted_address);
-                currentLocationID = response.results[0].place_id;
-                currentLocation = response.results[0].formatted_address;
-                $('#autocomplete').val(currentLocation);
+                console.log(response);
+                var lat = response.results[0].geometry.location.lat;
+                var lon = response.results[0].geometry.location.lng;
+                var id = response.results[0].place_id;
+                console.log(id);
+                currentLocationID = id;
+                console.log(currentLocationID);
+                initialize(lat,lon);
+                // // console.log(response.results[0].formatted_address);
+                // currentLocationID = response.results[0].place_id;
+                // currentLocation = response.results[0].formatted_address;
+                // $('#autocomplete').val(currentLocation);
             });
     }
 
 
-
-    $("#geolocation").on('click',geoFindMe);
+    geoFindMe();
     function geoFindMe() {
         function success(position) {
             console.log(position);
@@ -84,6 +73,7 @@ $(document).ready(function () {
 
     }
 
+
     var center;
     var map;
     var infowindow;
@@ -92,8 +82,11 @@ $(document).ready(function () {
     var maker = [];
     var directionsRenderer;
     var directionsService;
+    var mycurrLatLng;
 
     function initialize(lat, lon) {
+        console.log(currentLocationID);
+        mycurrLatLng = {lat: lat, lng: lon};;
         center = new google.maps.LatLng(lat, lon);
         directionsRenderer = new google.maps.DirectionsRenderer;
         directionsService = new google.maps.DirectionsService;
@@ -101,42 +94,21 @@ $(document).ready(function () {
             center: center,
             zoom: 15 //the larger number, the more zoom in
         });
-
         directionsRenderer.setMap(map);
         directionsRenderer.setPanel(document.getElementById('right-panel'));
-        request = {
-            location: center,
-            radius: range,
-            types: [type]
-        };
-        console.log(request);
         infowindow = new google.maps.InfoWindow();
-        service = new google.maps.places.PlacesService(map);
-        service.nearbySearch(request, callback);
+        createMarker(mycurrLatLng);
     }
 
-
-    function callback(results, status) {
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
-            console.log(results);
-            for (var i = 0; i < results.length; i++) {
-                createMarker(results[i]);
-            }
-        } else {
-            alert('no result found!!!');
-        }
-    }
-
-    function createMarker(place) {
-        //console.log(place);
-        var placeLocation = place.geometry.location;
-        console.log(placeLocation);
+    function createMarker(latLng) {
         marker = new google.maps.Marker({
             map: map,
-            position: placeLocation
+            position: latLng,
+            icon: {                             
+                url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"                          }
         });
         google.maps.event.addListener(marker, 'click', function () {
-            var content = place.name + "<br>" + "Rating: " + place.rating + "<br>" + "<a href='#' class='route'>Direct Me!!!</a>";
+            var content ="Address: " + place.rating;
             infowindow.setContent(content);
             infowindow.open(map, this);
             $(".route").css("display", "block");
@@ -160,21 +132,21 @@ $(document).ready(function () {
 
 
 
-    function calculateAndDisplayRoute(directionsService, directionsRenderer, start, end) {
-        // var start = document.getElementById('start').value;
-        // var end = document.getElementById('end').value;
-        directionsService.route({
-            origin: start,
-            destination: end,
-            travelMode: 'DRIVING'
-        }, function (response, status) {
-            if (status === 'OK') {
-                directionsRenderer.setDirections(response);
-            } else {
-                window.alert('Directions request failed due to ' + status);
-            }
-        });
-    }
+    // function calculateAndDisplayRoute(directionsService, directionsRenderer, start, end) {
+    //     // var start = document.getElementById('start').value;
+    //     // var end = document.getElementById('end').value;
+    //     directionsService.route({
+    //         origin: start,
+    //         destination: end,
+    //         travelMode: 'DRIVING'
+    //     }, function (response, status) {
+    //         if (status === 'OK') {
+    //             directionsRenderer.setDirections(response);
+    //         } else {
+    //             window.alert('Directions request failed due to ' + status);
+    //         }
+    //     });
+    // }
 
 });
 
