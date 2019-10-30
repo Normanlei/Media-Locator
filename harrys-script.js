@@ -73,12 +73,16 @@ function populateNearbyEvents(response, name, liEle) {
   let event = response._embedded.events[0];
   console.log(name);
   console.log(event);
+  console.log(response);
   let coords = event._embedded.venues[0].location;
   let eventURL = event.url;
   let aLink = $("<a> Event Nearby</a>");
   aLink.attr("href", eventURL);
+  var mycurrLatLng = {lat: parseFloat(coords.latitude), lng: parseFloat(coords.longitude)};
+  getFinalPlaceDetail(parseFloat(coords.latitude),parseFloat(coords.longitude),event._embedded.venues[0].name);
+  //createMarker(mycurrLatLng);
+  // let spanCoords = $("<span>");
+  // spanCoords.text(" " + coords.latitude + " " + coords.longitude);
 
-  let spanCoords = $("<span>");
-  spanCoords.text(" " + coords.latitude + " " + coords.longitude);
-  liEle.append(aLink, spanCoords);
+  // liEle.append(aLink, spanCoords);
 }
