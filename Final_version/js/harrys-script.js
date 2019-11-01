@@ -1,19 +1,29 @@
 const TDkey = "348716-WhatsAro-8WWCXOC7";
 
-$("#search").on("click", function(event) {
+$("#search_open,#search_close").on("click", function(event) {
   event.preventDefault();
-  getResults();
+  // console.log($("#query_open").val);
+  // console.log($("#location_open").val);
+  if ($("#query_open").val().length>0 && $("#location_open").val().length>0){
+  $("#index-banner").css('display','none');
+  $("#function-section").css('display','block');
+  $("#foot-setion").css('display','none');
+  getPlaceDetailViaAddress($("#location_open").val().trim());
+  //getResults();
+  }else {
+    alert("need more parameter"); //need more works
+  }
 });
 
 function getResults() {
-  let search = $("#input-query").val();
-  let type = $("#type").val();
+  let search = $("#query_open").val();
+  let type = "music"; //change
   let moreInfo = 1;
   console.log(search, type, moreInfo);
   let tasteDiveURL = `http://tastedive.com/api/similar?q=${search}&type=${type}&info=${moreInfo}&limit=10&k=${TDkey}`;
   $.ajax({
     url: tasteDiveURL,
-    type: "GET",
+    type: "GET", 
     dataType: "jsonp"
   }).then(function(response) {
     console.log(response);
@@ -25,16 +35,16 @@ function populateResults(response) {
   $("#results").empty();
   let info = response.Similar.Info[0];
   let results = response.Similar.Results;
-  $("#search-span").text(info.Name);
-  $("#type-span").text(info.Type);
+  $("#search-span").text('Search: '+info.Name+"    ");
+  $("#type-span").text('Type: ' +info.Type);
 
   for (let i = 0; i < results.length; i++) {
-    let li = $("<li class='list-group-item td-item'>");
+    let li = $("<li class='collection-item'>");
     li.text(`Name: ${results[i].Name}, Type: ${results[i].Type}`);
     li.attr("data-name", results[i].Name);
     $("#results").append(li);
   }
-  $(".td-item").on("click", function() {
+  $(".collection-item").on("click", function() {
     getEvents($(this).attr("data-name"), $(this));
   });
 }
@@ -58,7 +68,7 @@ function getEvents(name, liEle) {
     if (response.page.totalElements != 0) {
       populateNearbyEvents(response, name, liEle);
     } else {
-      let span = $("<span> No Event Nearby</span>");
+      let span = $("<span> ☹️No Event Nearby</span>");
       liEle.append(span);
     }
   });
@@ -70,10 +80,6 @@ function populateNearbyEvents(response, name, liEle) {
   console.log(event);
   console.log(response);
   let coords = event._embedded.venues[0].location;
-  let eventURL = event.url;
-  let aLink = $("<a> Event Nearby</a>");
-  aLink.attr("href", eventURL);
-  var mycurrLatLng = {lat: parseFloat(coords.latitude), lng: parseFloat(coords.longitude)};
   getFinalPlaceDetail(parseFloat(coords.latitude),parseFloat(coords.longitude),event._embedded.venues[0].name);
   //createMarker(mycurrLatLng);
   // let spanCoords = $("<span>");
