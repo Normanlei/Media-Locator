@@ -42,3 +42,17 @@ nav{
   /* background-image: url('../image/cool-background.png') ; */
   background-color: skyblue;
 }
+
+#results {
+  height: 30vh;
+  overflow-y: scroll;
+}
+
+.collection-item:hover {
+  background-color: hsl(0, 0%, 96%);
+  cursor: pointer;
+}
+
+#map {
+  width: 100%;
+}

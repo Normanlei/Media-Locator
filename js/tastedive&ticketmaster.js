@@ -38,24 +38,57 @@ function populateResults(response) {
   if (response.Similar.Results.length > 0) {
     let info = response.Similar.Info[0];
     let results = response.Similar.Results;
-    let searchedItem = $("<li class='collection-item'>");
-    searchedItem.html("Name: <b>"+info.Name+"</b>, Type: <b>"+info.Type+"</b>");
+    let searchedItem = $("<li class='collection-item' href='#item-info'>");
+    searchedItem.html(
+      "Name: <b>" + info.Name + "</b>, Type: <b>" + info.Type + "</b>"
+    );
     searchedItem.attr("data-name", info.Name);
-    recommends.push(info.Name);
+    searchedItem.attr("data-index", 0);
+    recommends.push({
+      name: info.Name,
+      wTeaser: info.wTeaser,
+      wUrl: info.wUrl
+    });
     $("#results").append(searchedItem);
 
     for (let i = 0; i < results.length; i++) {
-      let li = $("<li class='collection-item'>");
-      li.html("Name: <b>"+results[i].Name+"</b>, Type: <b>"+results[i].Type+"</b>");
+      let li = $("<li class='collection-item' href='#item-info'>");
+      li.html(
+        "Name: <b>" +
+          results[i].Name +
+          "</b>, Type: <b>" +
+          results[i].Type +
+          "</b>"
+      );
       li.attr("data-name", results[i].Name);
+      li.attr("data-index", i + 1);
       $("#results").append(li);
-      recommends.push(results[i].Name);
+      recommends.push({
+        name: results[i].Name,
+        wTeaser: results[i].wTeaser,
+        wUrl: results[i].wUrl
+      });
     }
   } else {
     let li = $("<li class='collection-item'>").text("☹️No Relative Result");
     $("#results").append(li);
   }
+
   initGetEvents();
+
+  $("#item-info").modal();
+  $(".collection-item").on("click", function() {
+    $("#item-info").modal("open");
+    populateModal(this);
+  });
+}
+
+function populateModal(item) {
+  let index = $(item).attr("data-index");
+  let itemData = recommends[index];
+  $("#modal-header").text(itemData.name);
+  $("#item-wiki").text(itemData.wTeaser);
+  $("#wiki-url").attr("href", itemData.wUrl);
 }
 
 /*************************
@@ -74,7 +107,10 @@ function initGetEvents() {
   async function limitApiCalls() {
     for (let i = 0; i < recommends.length; i++) {
       await delay(225);
-      getEvents(recommends[i], $('li[data-name="' + recommends[i] + '"]'));
+      getEvents(
+        recommends[i].name,
+        $('li[data-name="' + recommends[i].name + '"]')
+      );
     }
   }
   limitApiCalls();
