@@ -26,13 +26,13 @@ nav{
 #query_open,
 #query_close,
 #location_close{
-  width: 125px;
+  width: 100px;
   height: 45px;
   padding: 1px;
 }
 
 #location_open{
-  width: 200px;
+  width: 120px;
   height: 45px;
   padding: 1px;
 }

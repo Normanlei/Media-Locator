@@ -2,76 +2,249 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+  <title>Media_Locator_HTML</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style1.css" />
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCy_fsa23_HL03eeIZhtAcxDd8RCmVnogo&libraries=places"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="script1.js"></script>
-    <title>Location finder</title>
+  <!-- autocomplete  -->
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+  <link href="css/map_style.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body>
-    <h1 class="display-3">Location Finder</h1>
-    <div class="row">
-        <div class="column1  ">
-            <p class="p1">Title: </p>
-            <div style="width:250px;">
-                <button class="btn" id="button1" style="float: right; background-color:black"><i class="fa fa-search"></i></button>
-                <div style="overflow: hidden; padding-right: .5em; ">
-                    <input type="text" id="inp1" style="width: 100%" />
-                </div>
-                <!--<button id ="button1" value="Get current location">Get current Location</button>-->
-                <p class="p1">Type: </p>
-                <div class="select1" style="width:250px;">
-
-
-                    <div>
-
-                        <div class="input-field col s12">
-                            <select>
-                                <option class="select1" value="" disabled selected>Choose your option</option>
-                                <option class="select1" value="Movie">Movie</option>
-                                <option class="select1" value="Music">Music</option>
-
-                            </select>
-
-                        </div>
-                    </div>
-                </div>
-                <br />
-
+  <!--nav section-->
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo">HTML</a>
+      <!--nav open section-->
+      <ul class="right hide-on-med-and-down">
+        <li class="row">
+          <div class="col s12">
+            Query Input:
+            <div class="input-field inline">
+              <input id="query_open" type="query" class="validate" placeholder="Artist/Name"
+                oninput="query_close.value = query_open.value; return true;" />
             </div>
-        </div>
-            <div class="column2  ">
-                    <!--<div id="right-panel">
-                            <button class="route" style="display: none;">Show Route!</button>
-                            <button class="map" style="display: none;">Direct on Google Map!</button>
-                        </div>-->
-                        <div id="map">
-                        </div>
-                    
-                <div id="item_list">
-
-                    <u1 class="list-group">
-                        <li>Jurassic Park</li>
-                        <li>Batman Begins</li>
-                    </u1>
-
-                </div>
+          </div>
+        </li>
+        <li class="row">
+          <div class="col s12">
+            Range:
+            <div class="input-field inline">
+              <select id="range_open" class="browser-default"
+                oninput="range_close.value = range_open.value; return true;" style="width: 90px;">
+                <option value="30" selected>30 Miles</option>
+                <option value="10">10 Miles</option>
+                <option value="20">20 Miles</option>
+                <option value="40">40 Miles</option>
+                <option value="50">50 Miles</option>
+                <option value="60">60 Miles</option>
+              </select>
             </div>
+          </div>
+        </li>
+        <li class="row">
+          <div class="col s12">
+            Location:
+            <div class="input-field inline">
+              <a class="waves-effect waves-light btn-flat" style="margin: 0; padding: 0;" id="geolocation_open"><i
+                  class="material-icons">my_location</i></a>
+              <input id="location_open" type="address" class="validate" placeholder="Full Address"
+                oninput="location_close.value = location_open.value; return true;" />
+            </div>
+          </div>
+        </li>
+        <li class="row">
+          <div class="col s12" style="padding: 0;">
+            <a class="waves-effect waves-light btn-flat" style="margin: 0; padding: 0;" id="search_openopen"><i
+                class="material-icons">search</i></a>
+          </div>
+        </li>
+      </ul>
+      <!--nav close side nav section-->
+      <ul id="nav-mobile" class="sidenav">
+        <h1 class="header center orange-text" style="font-size: 30px;">
+          Media Locator
+        </h1>
+        <li class="row">
+          <div class="col s12">
+            Query Input:
+            <div class="input-field">
+              <input id="query_close" type="query" class="validate" placeholder="Artist/Name" style="width: 100%;"
+                oninput="query_open.value = query_close.value; return true;" />
+            </div>
+          </div>
+        </li>
+        <li class="row">
+          <div class="col s12">
+            Range:
+            <div class="input-field">
+              <select id="range_close" class="browser-default"
+                oninput="range_open.value = range_close.value; return true;" style="width: 100%;">
+                <option value="30" selected>30 Miles</option>
+                <option value="10">10 Miles</option>
+                <option value="20">20 Miles</option>
+                <option value="40">40 Miles</option>
+                <option value="50">50 Miles</option>
+                <option value="60">60 Miles</option>
+              </select>
+            </div>
+          </div>
+        </li>
+        <li class="row">
+          <div class="col s12">
+            Location:
+            <div class="input-field">
+              <input id="location_close" type="address" class="validate" placeholder="Enter Full Address"
+                style="width: 100%;" oninput="location_open.value = location_close.value; return true;" />
+            </div>
+          </div>
+        </li>
+        <li class="row">
+          <div class="col s12">
+            <a class="waves-effect waves-white btn-flat" style="padding: 0; margin: 0;" id="geolocation_close">Get
+              Current Location</a>
+          </div>
+        </li>
+        <div class="col s12" style="text-align: center;">
+          <button id="search_close" class="btn waves-effect waves-light btn-large" type="start" name="action"
+            style="width: 60%; background-color: orange;">
+            GET STARTED
+          </button>
         </div>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-         
+      </ul>
+      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons" id="hamburger"
+          style="font-size: 30px;">menu</i></a>
+    </div>
+  </nav>
+
+  <!--Body Section-->
+
+  <!--Check-in-section-->
+  <div class="section no-pad-bot" id="index-banner" style="display: block;">
+    <div class="container">
+      <br /><br />
+      <h1 class="header orange-text">Media Locator</h1>
+      <div class="row">
+        <h5 class="header col s12 light">
+          This web app, helps you get all the media events of a certain type happening near the specified location. It
+          can also locate the events on the map and provide route.
+        </h5>
+      </div>
+      <!-- <div class="row">
+        <div class="col s12">
+          <span style="font-size: 25px;">Location:</span>
+          <div class="input-field inline">
+            <input id="location_open" type="address" class="validate" placeholder="Enter Full Address"
+              oninput="location_close.value = location_open.value; return true;">
+          </div>
+        </div>
+        <div class="col s12">
+          <a class="waves-effect waves-white btn-flat" style="padding: 0; margin: 0;" id="geolocation_open">Get Current
+            Location</a>
+        </div>
+      </div> -->
+      <div class="row">
+        <a href="#" id="search_open" class="btn-large waves-effect waves-light orange">Get Started</a>
+      </div>
+      <h6 style="display: none;" id="error-alert">Error: Please enter all the required parameters!!!</h6>
+      <br /><br />
+    </div>
+  </div>
+
+  <!--Functionality section-->
+  <div class="container" id="function-section" style="display: none;">
+    <div class="section">
+      <!--   function   -->
+      <div class="row">
+        <div class="col s12">
+          <p>
+            <span id="search-span"></span>
+            <span id="type-span"></span>
+          </p>
+          <ul class="collection" id="results">
+            <!-- <li class="collection-item">Alvin</li> -->
+            <!--sample-->
+          </ul>
+        </div>
+      </div>
+
+      <div class="row" style="height: 70vh;">
+        <div id="map" class="col s9">
+          <!-- <img class="materialboxed" width="100%" src="image/cool-background.png">
+          sample -->
+        </div>
+
+        <div class="col s3" id="right-panel"></div>
+      </div>
+
+      <div class="row">
+        <div class="col s12" id="route" style="margin-top: 20px;display: none">
+          <button class="btn waves-effect waves-light btn-small" type="submit" name="action" id="showroute">
+            Show Route
+            <i class="tiny material-icons right">arrow_upward</i>
+          </button>
+          <button class="btn waves-effect waves-light btn-small" type="submit" name="action" id="navigation">
+            Navigated by Google Map
+            <i class="tiny material-icons right">send</i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <br /><br />
+  </div>
+
+  <!--footer-->
+  <footer class="page-footer orange" style="display: block;" id="footer-section">
+    <div class="container">
+      <div class="row">
+        <div class="col s12 l8">
+          <h5 class="white-text">Team & Project Intro</h5>
+          <p class="grey-text text-lighten-4">
+            We are a team of three coding bootcamp students working on this
+            project as our very first project. This project is building an
+            application called "Media Locator", that helps keep track of media
+            occuring nearby the location.
+          </p>
+        </div>
+        <div class="col s6 l2">
+          <h5 class="white-text">Members:</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Harry Furusho</a></li>
+            <li><a class="white-text" href="#!">Norman Lei</a></li>
+            <li><a class="white-text" href="#!">Saranya Vasudevan</a></li>
+          </ul>
+        </div>
+
+        <div class="col s6 l2">
+          <h5 class="white-text">Acknowledge:</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Jason Rosen</a></li>
+            <li><a class="white-text" href="#!">Daniel Mont-Eton</a></li>
+            <li><a class="white-text" href="#!">Kris Shore</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright center">
+      <div class="container">
+        Made by HTML_Team
+      </div>
+    </div>
+  </footer>
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="config.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script>
+  <script src="js/googleapi.js"></script>
+  <script src="js/tastedive&ticketmaster.js"></script>
 </body>
 
 </html>

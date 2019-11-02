@@ -1,25 +1,21 @@
 const TDkey = "348716-WhatsAro-8WWCXOC7";
 let recommends;
+let radius;
 
-$("#search_open,#search_close").on("click", function(event) {
+$("#search_open,#search_close,#search_openopen").on("click", function (event) {
   event.preventDefault();
-  // console.log($("#query_open").val);
-  // console.log($("#location_open").val);
   if (
     $("#query_open").val().length > 0 &&
     $("#location_open").val().length > 0
   ) {
+    radius = $('#range_open').val();
+    $("#error-alert").css('display','none');
     $("#index-banner").css("display", "none");
     $("#function-section").css("display", "block");
-    $("#foot-setion").css("display", "none");
-    getPlaceDetailViaAddress(
-      $("#location_open")
-        .val()
-        .trim()
-    );
-    getResults();
+    $("#footer-setion").css("display", "none");
+    getPlaceDetailViaAddress($("#location_open,#location_close").val());
   } else {
-    alert("need more parameter"); //need more works
+    $("#error-alert").css('display','block');
   }
 });
 
@@ -27,13 +23,12 @@ function getResults() {
   let search = $("#query_open").val();
   let moreInfo = 1;
   recommends = [];
-  console.log(search, type, moreInfo);
   let tasteDiveURL = `http://tastedive.com/api/similar?q=${search}&info=${moreInfo}&limit=20&k=${TDkey}`;
   $.ajax({
     url: tasteDiveURL,
     type: "GET",
     dataType: "jsonp"
-  }).then(function(response) {
+  }).then(function (response) {
     populateResults(response);
   });
 }
@@ -44,20 +39,20 @@ function populateResults(response) {
     let info = response.Similar.Info[0];
     let results = response.Similar.Results;
     let searchedItem = $("<li class='collection-item'>");
-    searchedItem.text(`Name: ${info.Name}, Type: ${info.Type}`);
+    searchedItem.html("Name: <b>"+info.Name+"</b>, Type: <b>"+info.Type+"</b>");
     searchedItem.attr("data-name", info.Name);
     recommends.push(info.Name);
     $("#results").append(searchedItem);
 
     for (let i = 0; i < results.length; i++) {
       let li = $("<li class='collection-item'>");
-      li.text(`Name: ${results[i].Name}, Type: ${results[i].Type}`);
+      li.html("Name: <b>"+results[i].Name+"</b>, Type: <b>"+results[i].Type+"</b>");
       li.attr("data-name", results[i].Name);
       $("#results").append(li);
       recommends.push(results[i].Name);
     }
   } else {
-    let li = $("<li class='list-group-item td-item'>").text("No Results");
+    let li = $("<li class='collection-item'>").text("☹️No Relative Result");
     $("#results").append(li);
   }
   initGetEvents();
@@ -86,38 +81,36 @@ function initGetEvents() {
 }
 
 function getEvents(name, liEle) {
-  let ticketMasterURL = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${TMKey}&keyword=${name}&city=seattle`;
-  // &radius=50&unit=miles&latlong={YOURCOORDS}&size=40&classificationName=[Music, Arts & Theatre]
-  // {YOURCOORDS} is latitude,longitude (ex. -132.01,23.22) NO BRACKETS
-  // REMOVE &city=seattle if using latlong
+  let ticketMasterURL = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${TMKey}&keyword=${name}&radius=${radius}&unit=miles&latlong=${currentLat + "," + currentLon}`;
   $.ajax({
     type: "GET",
     url: ticketMasterURL,
-    dataType: "json"
-  }).then(function(response) {
-    if (response.page.totalElements != 0) {
-      populateNearbyEvents(response, name, liEle);
-    } else {
-      let span = $("<span> ☹️No Event Nearby</span>");
-      liEle.append(span);
+    dataType: "json",
+    success: function (response) {
+      if (response.page.totalElements != 0) {
+        populateNearbyEvents(response, name, liEle);
+      } 
+      // else {
+      //   let span = $("<span> ☹️No Event Nearby</span>");
+      //   liEle.append(span);
+      // }
     }
   });
 }
 
-function populateNearbyEvents(response, name) {
+function populateNearbyEvents(response, name, liEle) {
+  let ticketmasterLink = response._embedded.events[0].url;
+  let span = $("<a href='"+ticketmasterLink+"'  target='_blank' class='btn-floating btn-small cyan pulse'><i class='material-icons event'>event</i></a>");
+  liEle.append("        ");
+  liEle.append(span);
   let event = response._embedded.events[0];
-  console.log(name);
-  console.log(event);
-  console.log(response);
   let coords = event._embedded.venues[0].location;
   getFinalPlaceDetail(
     parseFloat(coords.latitude),
     parseFloat(coords.longitude),
-    event._embedded.venues[0].name
+    event._embedded.venues[0].name,event.name,event.dates.start.localDate
   );
-  //createMarker(mycurrLatLng);
-  // let spanCoords = $("<span>");
-  // spanCoords.text(" " + coords.latitude + " " + coords.longitude);
-
-  // liEle.append(aLink, spanCoords);
 }
+
+
+
