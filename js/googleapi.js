@@ -153,7 +153,7 @@ function createMarker(latLng) {
         map: map,
         position: latLng,
     });
-    var contentString = "Name: " + artistname + "<br>Venue Name: " + finalLocationName + "<br>Adreess: " + finalLocationAddress + "<br>Date: " + finaleventdate;
+    var contentString = "Name: " + artistname + "<br>Venue Name: " + finalLocationName + "<br>Adreess: " + finalLocationAddress + "<br>Date: " + finaleventdate + "<br><a href='https://www.google.com/maps/dir/?api=1&origin=QVB&origin_place_id=" + currentLocationID + "&destination=QVB&destination_place_id=" + finalLocationID + "&travelmode=driving' target='_blank'>Direct ME!</a>";
     var infowindow = new google.maps.InfoWindow({
         content: contentString
     });
