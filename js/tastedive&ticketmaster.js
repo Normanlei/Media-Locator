@@ -13,7 +13,7 @@ $("#search_open,#search_close,#search_openopen").on("click", function (event) {
     $("#index-banner").css("display", "none");
     $("#function-section").css("display", "block");
     $("#footer-setion").css("display", "none");
-    getPlaceDetailViaAddress($("#location_open,#location_close").val());
+    getPlaceDetailViaAddress($("#location_open").val());
   } else {
     $("#error-alert").css('display','block');
   }
@@ -23,7 +23,7 @@ function getResults() {
   let search = $("#query_open").val();
   let moreInfo = 1;
   recommends = [];
-  let tasteDiveURL = `http://tastedive.com/api/similar?q=${search}&info=${moreInfo}&limit=20&k=${TDkey}`;
+  let tasteDiveURL = `https://tastedive.com/api/similar?q=${search}&info=${moreInfo}&limit=20&k=${TDkey}`;
   $.ajax({
     url: tasteDiveURL,
     type: "GET",
