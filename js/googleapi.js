@@ -6,10 +6,10 @@ document.head.append(script);
 function autocomplete() {
     var input1 = new google.maps.places.Autocomplete(document.getElementById('location_open'));
     var input2 = new google.maps.places.Autocomplete(document.getElementById('location_close'));
-    google.maps.event.addListener(input1, 'place_changed', function(){
+    google.maps.event.addListener(input1, 'place_changed', function () {
         $("#location_close").val($("#location_open").val());
     });
-    google.maps.event.addListener(input2, 'place_changed', function(){
+    google.maps.event.addListener(input2, 'place_changed', function () {
         $("#location_open").val($("#location_close").val());
     });
 }
@@ -158,15 +158,21 @@ function createMarker(latLng) {
         content: contentString
     });
     marker.infowindow = infowindow;
+    marker.finalLocationID = finalLocationID;
+    marker.finalLocationAddress = finalLocationAddress;
     marker.addListener('click', function () {
         $("#route").css("display", "block");
-        return this.infowindow.open(map, this);
-    });
-    $("#navigation").on("click", function () {
-        window.open("https://www.google.com/maps/dir/?api=1&origin=QVB&origin_place_id=" + currentLocationID + "&destination=QVB&destination_place_id=" + finalLocationID + "&travelmode=walking");
-    });
-    $("#showroute").on("click", function () {
-        calculateAndDisplayRoute(directionsService, directionsRenderer, currentLocation, finalLocationAddress);
+        this.infowindow.open(map, this);
+        console.log(this.finalLocationAddress);
+        console.log(this.finalLocationID);
+        finalLocationAddress = this.finalLocationAddress;
+        finalLocationID = this.finalLocationID;
+        $("#navigation").on("click", function () {
+            window.open("https://www.google.com/maps/dir/?api=1&origin=QVB&origin_place_id=" + currentLocationID + "&destination=QVB&destination_place_id=" + finalLocationID + "&travelmode=walking");
+        });
+        $("#showroute").on("click", function () {
+            calculateAndDisplayRoute(directionsService, directionsRenderer, currentLocation,finalLocationAddress);
+        });
     });
 
     google.maps.event.addListener(infowindow, 'closeclick', function () {
